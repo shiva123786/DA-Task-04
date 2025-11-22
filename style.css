@@ -1,310 +1,304 @@
-/* ===================================================================
-   WEEK 1 + WEEK 2 — BASE STYLING
-=================================================================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", Arial, sans-serif;
-}
+/*
+   1) MOVING BACKGROUND PARTICLES (Paste this at top!)
+ */
 
-body {
-    background: linear-gradient(135deg, #4a6cf7, #8f94fb, #6a85f1);
-    background-size: 400% 400%;
-    animation: gradientBG 12s ease infinite;
-    color: #222;
-    padding: 20px;
-    line-height: 1.6;
-    transition: background 0.4s ease, color 0.4s ease;
-}
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
 
-/* Animated Background */
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+  const ctx = canvas.getContext('2d', { alpha: true });
 
-/* ---------------- HEADER ---------------- */
-header {
-    text-align: center;
-    background: #4a6cf7;
-    color: white;
-    padding: 40px 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    transition: 0.4s ease;
-}
+  const config = {
+    particleCount: Math.round(Math.max(window.innerWidth, 800) / 18),
+    baseSize: 2.2,
+    sizeVariation: 2.3,
+    speed: 0.2,
+    drift: 0.3,
+    lineDistance: 120,
+    color1: [255, 255, 255, 0.18],
+    color2: [138, 180, 255, 0.08],
+    useGradient: true
+  };
 
-/* Header Glow */
-.glow-effect {
-    animation: glowPulse 3s ease-in-out;
-}
-@keyframes glowPulse {
-    0% { box-shadow: 0 0 10px #fff; }
-    50% { box-shadow: 0 0 25px #4a6cf7; }
-    100% { box-shadow: 0 0 10px #fff; }
-}
+  let W = 0, H = 0;
+  let particles = [];
+  let animationId = null;
 
-header h1 {
-    font-size: 2.6rem;
-}
-
-/* ---------------- NAVIGATION ---------------- */
-nav {
-    margin-bottom: 10px;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    padding: 15px;
-    background: white;
-    border-radius: 10px;
-    max-width: 800px;
-    margin: 20px auto;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-/* Nav Links */
-nav a {
-    position: relative;
-    text-decoration: none;
-    font-weight: 600;
-    color: #4a6cf7;
-    padding-bottom: 5px;
-    transition: 0.3s ease;
-}
-
-/* Animated Underline */
-nav a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 2px;
-    width: 0%;
-    background: #ffbd59;
-    transition: 0.3s;
-}
-
-nav a:hover {
-    color: #ffbd59;
-}
-nav a:hover::after {
-    width: 100%;
-}
-
-/* Mobile Menu Button */
-#mobileMenuBtn {
-    display: none;
-    background: #4a6cf7;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    margin: 10px auto;
-}
-
-/* ---------------- SECTIONS ---------------- */
-section {
-    background: white;
-    padding: 25px;
-    margin: 20px auto;
-    max-width: 900px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.08);
-
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.8s ease-out;
-}
-
-/* Scroll Reveal */
-.visible {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-}
-
-section h2 {
-    color: #4a6cf7;
-    font-size: 1.9rem;
-    margin-bottom: 10px;
-}
-
-/* ---------------- ABOUT IMAGE ---------------- */
-#about img {
-    width: 170px;
-    border-radius: 50%;
-    display: block;
-    margin: 15px auto;
-}
-
-/* ---------------- LISTS ---------------- */
-ul, ol {
-    margin-left: 25px;
-}
-li { padding: 6px 0; }
-
-/* ---------------- SKILLS GRID ---------------- */
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-}
-.skills-grid ul {
-    background: default;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 4px solid #4a6cf7;
-}
-
-/* ---------------- PROJECT CARDS ---------------- */
-article {
-    background: default;
-    padding: 20px;
-    border-radius: 8px;
-    border-left: 6px solid #4a6cf7;
-    margin: 15px 0;
-}
-
-/* ---------------- FORM ---------------- */
-input, textarea {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-}
-
-/* Buttons */
-button {
-    background: #4a6cf7;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-
-    position: relative;
-    overflow: hidden;
-}
-
-/* Shine Hover */
-button::before {
-    content: "";
-    position: absolute;
-    left: -100%;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0.3);
-    transition: 0.4s ease;
-}
-button:hover::before {
-    left: 0;
-}
-
-/* Ripple Effect */
-.ripple {
-    position: absolute;
-    background: rgba(255,255,255,0.6);
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: rippleEffect 0.6s linear;
-    transform: translate(-50%, -50%);
-}
-@keyframes rippleEffect {
-    from { opacity: 1; transform: scale(0); }
-    to { opacity: 0; transform: scale(3); }
-}
-
-/* ---------------- VIDEO ---------------- */
-video {
-    display: block;
-    margin: 10px auto;
-    border: 3px solid #4a6cf7;
-    border-radius: 10px;
-}
-
-/* ---------------- FOOTER ---------------- */
-footer {
-    background: #0d0d0d;
-    padding: 30px;
-    margin-top: 40px;
-    text-align: center;
-    color: white;
-    border-radius: 12px;
-}
-footer a {
-    color: #4db8ff;
-}
-
-/* ===================================================================
-   WEEK 3 — DARK MODE
-=================================================================== */
-.dark-mode {
-    background: black;
-    color: #eee;
-}
-.dark-mode section {
-    background: #222;
-}
-.dark-mode nav ul {
-    background: #222;
-}
-.dark-mode footer {
-    background: black;
-}
-
-/* ===================================================================
-   WEEK 4 — RESPONSIVE DESIGN
-=================================================================== */
-
-/* Tablet */
-@media (max-width: 768px) {
-    header h1 { font-size: 2rem; }
-    nav ul { flex-wrap: wrap; gap: 10px; }
-    button { width: 100%; }
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-    #mobileMenuBtn { display: block; }
-
-    nav ul {
-        display: none;
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    nav.showMenu ul { display: flex; }
-
-    header h1 { font-size: 1.7rem; }
-    section { padding: 20px; }
-}
-
-/* Background canvas — sits behind content */
-#bg-canvas {
-  position: fixed;
-  inset: 0;                /* top:0; right:0; bottom:0; left:0 */
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;             /* behind everything */
-  pointer-events: none;    /* clicks pass through */
-  display: block;
-  background: transparent;
-}
-
-/* Optional: slightly dim content on very small screens for contrast */
-@media (max-width: 420px) {
-  body {
-    --bg-dim: 0.06;
+  function resize() {
+    W = canvas.width = Math.ceil(window.innerWidth);
+    H = canvas.height = Math.ceil(window.innerHeight);
+    initParticles();
   }
+
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+
+  function mixColor(c1, c2, t) {
+    return [
+      c1[0] + (c2[0] - c1[0]) * t,
+      c1[1] + (c2[1] - c1[1]) * t,
+      c1[2] + (c2[2] - c1[2]) * t,
+      c1[3] + (c2[3] - c1[3]) * t,
+    ];
+  }
+
+  function rgba(arr) {
+    return `rgba(${Math.round(arr[0])}, ${Math.round(arr[1])}, ${Math.round(arr[2])}, ${arr[3]})`;
+  }
+
+  function createParticle() {
+    const t = Math.random();
+    const size = Math.abs(rand(config.baseSize - config.sizeVariation, config.baseSize + config.sizeVariation));
+    const speedY = rand(0.2, 0.9) * config.speed;
+    const speedX = rand(-config.drift, config.drift);
+    const col = mixColor(config.color1, config.color2, t);
+
+    return {
+      x: rand(0, W),
+      y: rand(0, H),
+      vx: speedX,
+      vy: -speedY,
+      r: size,
+      color: rgba(col),
+      floatPhase: rand(0, Math.PI * 2),
+      floatAmp: rand(6, 22)
+    };
+  }
+
+  function initParticles() {
+    particles = [];
+    const count = Math.max(30, Math.min(180, config.particleCount));
+    for (let i = 0; i < count; i++) particles.push(createParticle());
+  }
+
+  function drawParticle(p) {
+    p.floatPhase += 0.002 + (p.r * 0.0005);
+    const bob = Math.sin(p.floatPhase) * p.floatAmp;
+
+    const cx = p.x + bob * 0.2;
+    const cy = p.y;
+
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, p.r * 6);
+    g.addColorStop(0, "rgba(255,255,255,0.9)");
+    g.addColorStop(0.3, "rgba(255,255,255,0.4)");
+    g.addColorStop(1, p.color);
+
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(cx, cy, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function step(t) {
+    ctx.clearRect(0, 0, W, H);
+
+    for (let p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.y < -50) p.y = H + 50;
+      if (p.x < -50) p.x = W + 50;
+      if (p.x > W + 50) p.x = -50;
+
+      drawParticle(p);
+    }
+
+    animationId = requestAnimationFrame(step);
+  }
+
+  resize();
+  animationId = requestAnimationFrame(step);
+
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resize, 150);
+  });
+
+})();
+
+
+/* ----------------------------------------------------------
+   DARK / LIGHT MODE
+---------------------------------------------------------- */
+
+const modeBtn = document.getElementById("modeToggle");
+
+modeBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+        modeBtn.textContent = "Switch to Light Mode ☀️";
+    } else {
+        modeBtn.textContent = "Switch to Dark Mode 🌙";
+    }
+});
+
+
+/* ----------------------------------------------------------
+   CONTACT FORM VALIDATION
+---------------------------------------------------------- */
+
+const contactForm = document.getElementById("contactForm");
+
+if (contactForm) {
+    contactForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        let name = document.getElementById("name").value.trim();
+        let email = document.getElementById("email").value.trim();
+        let message = document.getElementById("message").value.trim();
+
+        if (!name || !email || !message) {
+            alert("❗ Please fill out all fields.");
+        } else {
+            alert("✅ Message submitted successfully!");
+            this.reset();
+        }
+    });
 }
+
+
+/* ----------------------------------------------------------
+   COUNTER FEATURE
+---------------------------------------------------------- */
+
+let count = 0;
+
+function increaseCounter() {
+    count++;
+    document.getElementById("counterValue").textContent = count;
+}
+
+
+/* ----------------------------------------------------------
+   TASK MANAGER
+---------------------------------------------------------- */
+
+const addTaskBtn = document.getElementById("addTaskBtn");
+const taskList = document.getElementById("taskList");
+const taskInput = document.getElementById("taskInput");
+
+if (addTaskBtn) {
+    addTaskBtn.addEventListener("click", () => {
+        const text = taskInput.value.trim();
+
+        if (text === "") {
+            alert("⚠ Enter a task first.");
+            return;
+        }
+
+        const li = document.createElement("li");
+        li.innerHTML = `
+            ${text}
+            <button class="completeBtn">✔</button>
+            <button class="deleteBtn">🗑</button>
+        `;
+
+        taskList.appendChild(li);
+        taskInput.value = "";
+
+        li.querySelector(".completeBtn").addEventListener("click", () => {
+            li.classList.toggle("completed");
+        });
+
+        li.querySelector(".deleteBtn").addEventListener("click", () => {
+            li.remove();
+        });
+    });
+}
+
+
+/* ----------------------------------------------------------
+   MOBILE NAV MENU TOGGLE
+---------------------------------------------------------- */
+
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+const nav = document.querySelector("nav");
+
+if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener("click", () => {
+        nav.classList.toggle("showMenu");
+    });
+}
+
+/* ----------------------------------------------------------
+   SMOOTH SCROLL FOR NAV LINKS
+---------------------------------------------------------- */
+
+document.querySelectorAll("nav a").forEach(link => {
+    link.addEventListener("click", function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+
+        if (target) {
+            window.scrollTo({
+                top: target.offsetTop - 50,
+                behavior: "smooth"
+            });
+        }
+
+        nav.classList.remove("showMenu"); // Close mobile menu
+    });
+});
+
+
+/* ----------------------------------------------------------
+   SCROLL REVEAL ANIMATION
+---------------------------------------------------------- */
+
+const revealElements = document.querySelectorAll("section, article, .skills-grid div");
+
+function revealOnScroll() {
+    const triggerBottom = window.innerHeight * 0.85;
+
+    revealElements.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+
+        if (top < triggerBottom) {
+            el.classList.add("visible");
+        }
+    });
+}
+
+window.addEventListener("scroll", revealOnScroll);
+revealOnScroll();
+
+
+/* ----------------------------------------------------------
+   BUTTON RIPPLE EFFECT
+---------------------------------------------------------- */
+
+document.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", function (e) {
+
+        const ripple = document.createElement("span");
+        ripple.classList.add("ripple");
+
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+
+        btn.appendChild(ripple);
+
+        setTimeout(() => ripple.remove(), 600);
+    });
+});
+
+
+/* ----------------------------------------------------------
+   HEADER FLOATING GLOW ANIMATION
+---------------------------------------------------------- */
+
+const header = document.querySelector("header");
+
+function floatingGlow() {
+    header.classList.add("glow-effect");
+
+    setTimeout(() => {
+        header.classList.remove("glow-effect");
+    }, 3000);
+}
+
+setInterval(floatingGlow, 8000);
